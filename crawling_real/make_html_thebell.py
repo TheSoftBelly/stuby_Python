@@ -7,16 +7,14 @@ soup= BeautifulSoup(res.text , 'html.parser')
 asideBox = soup.select('#contents > div.contentSection > div > div.asideBox > div.bestBox.tp2 > div > ul > li > ul > li > a')
 asideBox_all_titles=[]
 asideBox_hrefs = []
-asideBox_results = []
 asideBox_call_hrefs = soup.find_all('a', class_='txtE')
 for asideBox_href in asideBox_call_hrefs:
     asideBox_hrefs.append('https://www.thebell.co.kr/'+asideBox_href.attrs['href'])
 for asideBox_title in asideBox:
     asideBox_titles=asideBox_title.text.strip()
     asideBox_all_titles.append(asideBox_titles)
-for asideBox_num in range(1,11):
-    asideBox_result={'순위':asideBox_num,'제목':asideBox_all_titles[asideBox_num-1], '링크':asideBox_hrefs[asideBox_num-1]}
-    asideBox_results.append(asideBox_result)
+
+
 #날씨 크롤링
 weather_url = 'https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%EB%82%A0%EC%94%A8'
 weather_res = requests.get(weather_url)
@@ -30,17 +28,17 @@ for weather_todays in weather_box:
     weather_today=weather_todays.select('ul > li > div > div.cell_date > span > strong')
     for weather_today_day in weather_today[0:3]:
         weather_today_daylist.append(weather_today_day.text)
-print('---------------------')
+
 for weather_today_num in weather_box:
     weather_today_numdays=weather_today_num.select('ul > li > div > div.cell_date > span > span')
     for weather_today_numday in weather_today_numdays[0:3]:
         weather_today_numdaylist.append(weather_today_numday.text)
-print('---------------------')
+
 for weather_likes in weather_box:
     weather_like = weather_likes.select('ul > li > div > div.cell_weather')
     for weather_like_todayresults in weather_like[0:3]:
         weather_like_todayresultslist.append(weather_like_todayresults.text.strip())
-print('---------------------')
+
 for weather_tems in weather_box:
     weather_today_tems = weather_tems.select('ul > li > div > div.cell_temperature > span')
     for weather_today_tem in weather_today_tems[0:3]:
